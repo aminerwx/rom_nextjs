@@ -1,0 +1,48 @@
+.card {
+    border: 1px solid #bacdd8;
+    background-color: white;
+    margin: .5rem .9rem;
+    padding: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: .4em;
+}
+
+.box {
+    padding: 2px 16px;
+}
+
+.container {
+    /* margin: 0 auto; */
+    /* margin-top: 20vh; */
+    /* max-width: 300px; */
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.child {
+    margin: auto;
+}
+.name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.img {
+    width: 100%;
+    border-radius: .4em;
+    border: 2px solid black;
+}
+
+.sidebar {
+    width: 400px;
+    border: 2px solid white;
+    margin-right: 5rem;
+
+}
+
+.r {
+    display: flex;
+}
