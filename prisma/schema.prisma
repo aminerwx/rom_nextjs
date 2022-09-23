@@ -8,16 +8,16 @@ datasource db {
 }
 
 model Console {
-  id    Int    @id @default(autoincrement())
-  name  String
-  image String
-  url   String  @default("") @unique
-  games Game[]
-  roms  Rom[]
+  id      Int    @id @default(autoincrement())
+  name    String
+  image   String
+  url     String @unique @default("")
+  company String
+  games   Game[]
+  roms    Rom[]
 }
 
 model Game {
-  // id          String  @id @default(uuid())
   id          String  @id
   title       String  @unique
   genre       String
@@ -26,7 +26,6 @@ model Game {
   publisher   String
   platformId  Int
   description String
-  url         String  @default("")
   platform    Console @relation(fields: [platformId], references: [id])
   roms        Rom[]
 }
@@ -41,6 +40,9 @@ model Rom {
   image      String
   platformId Int
   gameId     String
+  url        String
   game       Game    @relation(fields: [gameId], references: [id])
   platform   Console @relation(fields: [platformId], references: [id])
+
+  @@unique([sha256, url], map: "rom_url_unique_constraint")
 }

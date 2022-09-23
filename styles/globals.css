@@ -25,13 +25,3 @@ p {
   color: #7f8c9b;
   line-height: 150%;
 }
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: rgb(48, 50, 66);
-  }
-}

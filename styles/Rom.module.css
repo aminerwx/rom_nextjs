@@ -1,0 +1,36 @@
+.card {
+    border: 2px solid #000000;
+    /* border: 1px solid #bacdd8; */
+    background-color: white;
+    /* margin: .5rem .9rem; */
+    padding: 1.25rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: .4em;
+}
+
+.box {
+    /* padding: 2px 16px; */
+}
+
+.container {
+    margin-top: 5vh;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.name {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem 0;
+    line-height: 1.9vh;
+    text-align: center;
+    color:rgb(15, 15, 15)
+}
+
+.img {
+    max-width: 100%;
+    border-radius: .4em;
+}
+
+

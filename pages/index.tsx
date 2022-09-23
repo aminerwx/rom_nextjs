@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
-import style from '../styles/games.module.css'
-import Image from 'next/image'
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import Image from 'next/image';
+import Link from 'next/link';
+import { prisma } from '../utils/global'
+
 
 type Game = {
     id: string,
@@ -18,7 +18,12 @@ type Game = {
 
 type Console = {
     id: number,
-    name: string
+    name: string,
+    url: string,
+    image: string,
+    company: string,
+    games: Array<Game>,
+    roms: Rom[]
 }
 
 type Rom = {
@@ -28,83 +33,50 @@ type Rom = {
 }
 
 interface Props  {
-    games: Array<Game>,
+    // games: Array<Game>,
     platforms: Array<Console>
 }
 
-const GameComponent: NextPage<Props> = ({games, platforms} : Props) => {
-    return (
-            <main className={style.r}>
-                <aside className={style.sidebar}>
-                    Sidebar
-                    {platforms.map(platform => 
-                         <a href="#" key={platform.id}><p>
-                            {platform.name}</p></a>
-                    )}
-                </aside>
-                <article className={style.container}>
-                    {/* {games} */}
-                    {games.map(game =>
-                        <div key={game.id} className={style.card}>
-                            <Image 
-                                src={`/boxart/${game.roms[0].image}`} 
-                                alt={`${game.title}`}
-                                layout='intrinsic'
-                                width={250}
-                                height={250}
-                                quality={100}
-                                className={style.img}
-                                objectFit='cover'
-                                loading='lazy'
-                                
-                            />
-                            <div className={style.box}>
-                                <p className={style.name}>
-                                    {game.title}
-                                </p>
-                                <p className={style.name}>
-                                    {game.roms[0].crc}
-                                </p>
+const ConsoleComponent: NextPage<Props> = ({ platforms } : Props) => {
+    return (<>
+        <article className='grid lg:grid-cols-3 md:grid-cols-2 gap-8'>
+            {platforms.map(platform => 
+                    <Link  href={`/${platform.url}`} key={platform.id}>
+                        <a>
+
+                <div className={`border bg-white w-80 h-52 flex justify-center items-center rounded-lg`}>
+                            <div className='text-center flex flex-col'>
+                                <Image width={200} height={160} quality={75} src={`/${platform.image}`} alt={platform.image} layout='intrinsic' objectFit='contain' />
+                                <span className="bg-gray-100 text-gray-800 text-sm font-medium mx-auto mt-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{platform.games.length}</span>                            
                             </div>
-                        </div>
-                    )}
-                </article>
-            </main>
-    );
+                </div>
+                        </a>
+                    </Link>
+            )}
+        </article>
+    </>);
 }
 
 export async function getStaticProps() {
-    const games = await prisma.game.findMany({
-        orderBy: [
-            {
-                title: 'asc'
-            }
-        ],
-        include: {
-            roms: {
-                select: {
-                    image: true,
-                    crc: true
-                }
-            }
-        },
-        take: 80
-    });
-
     const platforms = await prisma.console.findMany({
         orderBy: [
             {
-                name: 'asc'
+                company: 'asc'
             }
-        ]
+        ],
+        include: {
+            games: {
+                select: {
+                    id: true,
+                }
+            }
+        }
     });
-    console.log(platforms)
     return {
         props: {
-            games,
             platforms
         }
     }
 }
 
-export default GameComponent;
+export default ConsoleComponent;
